@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/main_title"
+        style="@style/TitleTextStyle"
+        android:text="1.欢迎使用手机防盗" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:text="您的手机防盗卫士："/>
+
+    <TextView
+        style="@style/HomeSafeItemTextStyle"
+        android:text="SIM卡变更报警"
+        android:drawableLeft="@drawable/star_big_on"/>
+
+    <TextView
+        style="@style/HomeSafeItemTextStyle"
+        android:text="GPS追踪"
+        android:drawableLeft="@drawable/star_big_on"/>
+    <TextView
+        style="@style/HomeSafeItemTextStyle"
+        android:text="远程销毁数据"
+        android:drawableLeft="@drawable/star_big_on"/>
+    <TextView
+        style="@style/HomeSafeItemTextStyle"
+        android:text="远程锁屏"
+        android:drawableLeft="@drawable/star_big_on"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_margin="2dp"
+            android:background="@drawable/presence_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_margin="2dp"
+            android:background="@drawable/presence_invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_margin="2dp"
+            android:background="@drawable/presence_invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/image4"
+            android:layout_margin="2dp"
+            android:background="@drawable/presence_invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setup1"
+            android:layout_centerInParent="true"/>
+        <Button
+            style="@style/SetUpBtnNextStyle"
+            android:id="@+id/btn_next" />
+
+    </RelativeLayout>
+
+</LinearLayout>

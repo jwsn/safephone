@@ -1,0 +1,5 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<resources>
+    <!--注意：color.xml的#5000000前两位是透明的效果参数从0099（透明不怎么透明），后6位是颜色的设置-->
+    <color name = "transparent">#50000000</color>
+</resources>

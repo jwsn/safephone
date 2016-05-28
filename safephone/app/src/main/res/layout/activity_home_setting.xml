@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:seaice="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_title"
+        style="@style/TitleTextStyle"
+        android:text="设置中心" />
+
+    <com.seaice.view.SetUpItemView
+        android:id="@+id/setting_update_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:item_title = "设置自动更新"
+        seaice:desc_off = "自动更新关闭"
+        seaice:desc_on = "自动更新开启"
+        >
+    </com.seaice.view.SetUpItemView>
+
+    <com.seaice.view.SetUpItemView
+        android:id="@+id/setting_blacknum_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:item_title = "黑名单设置"
+        seaice:desc_off = "黑名单设置已经关闭"
+        seaice:desc_on = "黑名单设置已经打开"
+        >
+    </com.seaice.view.SetUpItemView>
+
+    <com.seaice.view.SetUpItemView
+        android:id="@+id/setting_address_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:item_title = "电话归属地显示设置"
+        seaice:desc_off = "归属地显示已经关闭"
+        seaice:desc_on = "归属地显示已经开启"
+        >
+    </com.seaice.view.SetUpItemView>
+
+    <com.seaice.view.AddressStyleView
+        android:id="@+id/setting_address_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:address_title = "电话归属地显示"
+        seaice:address_desc_on="活力橙"
+        >
+    </com.seaice.view.AddressStyleView>
+
+    <com.seaice.view.AddressStyleView
+        android:id="@+id/setting_address_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:address_title = "归属地显示提示框显示位置"
+        seaice:address_desc_on="设置归属地提示框的显示位置"
+        >
+    </com.seaice.view.AddressStyleView>
+
+</LinearLayout>

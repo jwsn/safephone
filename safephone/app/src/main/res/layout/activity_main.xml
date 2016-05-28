@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_title"
+        style="@style/TitleTextStyle"
+        android:text="功能列表" />
+
+    <com.seaice.view.AlwaysMarqueeTextView
+        android:id="@+id/main_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="高仿黑马手机卫士，只此一家，追梦赤子心，Gala原传，职位测试"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:layout_margin="2dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:textColor="@android:color/black" />
+
+    <GridView
+        android:id="@+id/gdView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:numColumns="3">
+
+    </GridView>
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SetUpItemView">
+        <attr name="item_title" format="string"/>
+        <attr name="desc_on" format="string"/>
+        <attr name="desc_off" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="AddressStyleView">
+        <attr name="address_title" format="string"/>
+        <attr name="address_desc_on" format="string"/>
+    </declare-styleable>
+</resources>
