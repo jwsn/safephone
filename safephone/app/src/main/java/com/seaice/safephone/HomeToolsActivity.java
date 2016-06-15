@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.seaice.constant.GlobalConstant;
+import com.seaice.safephone.ProgressLock.LockActivity;
 import com.seaice.safephone.homeTools.HomeToolsAddress;
 import com.seaice.utils.PrefUtil;
 import com.seaice.utils.SmsBackupUtils;
@@ -74,6 +75,13 @@ public class HomeToolsActivity extends Activity {
             }
         }).start();
     }
+
+    public void progress_lock_setting(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, LockActivity.class);
+        startActivity(intent);
+    }
+
 
     /**
      * 关闭进度条

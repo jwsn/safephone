@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,11 +18,17 @@ import com.seaice.constant.GlobalConstant;
 import com.seaice.safephone.HomeSetting.HomeSettingDragView;
 import com.seaice.service.AddressService;
 import com.seaice.service.CallSmsSafeService;
+import com.seaice.service.LockService;
 import com.seaice.service.RockeyService;
+import com.seaice.utils.Md5Util;
 import com.seaice.utils.PrefUtil;
 import com.seaice.utils.ServiceStatusUtils;
+import com.seaice.utils.ToastUtil;
 import com.seaice.view.AddressStyleView;
 import com.seaice.view.SetUpItemView;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.locks.Lock;
 
 public class HomeSettingActivity extends Activity {
     private static final String TAG = "HomeSafeActivity";
@@ -27,10 +36,13 @@ public class HomeSettingActivity extends Activity {
     private com.seaice.view.SetUpItemView updateitemView;
     private com.seaice.view.SetUpItemView blacknumitemView;
     private com.seaice.view.SetUpItemView displayaddressitem;
+    private com.seaice.view.SetUpItemView watchDogItem;
     private com.seaice.view.AddressStyleView addressStyleView;
     private com.seaice.view.AddressStyleView addressLocationItem;
 
     private String[] items = {"卫士蓝", "金属灰", "苹果绿", "活力橙", "半透明"};
+    private EditText et_password;
+    private EditText et_comfirm_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +100,31 @@ public class HomeSettingActivity extends Activity {
             }
         });
 
+        //看门狗设置
+        watchDogItem = (SetUpItemView) findViewById(R.id.setting_watchdog_item);
+        boolean isWatchDogOpen = PrefUtil.getBooleanPref(this, GlobalConstant.PREF_SETTING_WATCHDOG);
+        Intent intentWatchDog = new Intent(HomeSettingActivity.this, LockService.class);
+        if (isWatchDogOpen == false) {
+            watchDogItem.setCheckBox(false);
+            stopService(intentWatchDog);
+        } else {
+            watchDogItem.setCheckBox(true);
+            startService(intentWatchDog);
+        }
+        watchDogItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeSettingActivity.this, LockService.class);
+                if (watchDogItem.isChecked() == true) {
+                    watchDogItem.setCheckBox(false);
+                    PrefUtil.setBooleanPref(HomeSettingActivity.this, GlobalConstant.PREF_SETTING_WATCHDOG, false);
+                    stopService(intent);
+                } else {
+                    showSetPasswordDialog();
+                }
+            }
+        });
+
         //电话归属地设置
         displayaddressitem = (SetUpItemView) findViewById(R.id.setting_address_display);
         boolean addressDis = PrefUtil.getBooleanPref(this, GlobalConstant.PREF_ADDRESS_DISPLAY) && ServiceStatusUtils.isServiceRunning(this,
@@ -137,6 +174,66 @@ public class HomeSettingActivity extends Activity {
         });
     }
 
+    /**
+     * 展示设置密码界面
+     */
+    private void showSetPasswordDialog() {
+        LayoutInflater inflater = LayoutInflater.from(HomeSettingActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeSettingActivity.this);
+        final AlertDialog dialog = builder.create();
+        View dialogView = inflater.inflate(R.layout.homesafe_password_dialog, null, false);
+        et_password = (EditText) dialogView.findViewById(R.id.et_password);
+        et_comfirm_password = (EditText) dialogView.findViewById(R.id.et_password_comfirm);
+        Button btn_ok = (Button) dialogView.findViewById(R.id.btn_ok);
+        Button btn_cancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+        dialog.setView(dialogView);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    comfirm_set_password();
+                    dialog.dismiss();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    /**
+     * 保存设置密码
+     *
+     * @return
+     */
+    private void comfirm_set_password() throws NoSuchAlgorithmException {
+        String password = et_password.getText().toString();
+        String password_confirm = et_comfirm_password.getText().toString();
+
+        if (!TextUtils.isEmpty(password) || password.trim().length() == 0) {
+            if (password.equals(password_confirm)) {
+                String md5Pwd = Md5Util.getMd5(password);
+                PrefUtil.setStringPref(HomeSettingActivity.this, GlobalConstant.PREF_WATCHDOG_PASSWORD, md5Pwd);
+                ToastUtil.showDialog(HomeSettingActivity.this, "密码已经设置！");
+                watchDogItem.setCheckBox(true);
+                Intent intent = new Intent(HomeSettingActivity.this, LockService.class);
+                PrefUtil.setBooleanPref(HomeSettingActivity.this, GlobalConstant.PREF_SETTING_WATCHDOG, true);
+                startService(intent);
+                //保存密码
+                PrefUtil.setStringPref(this, GlobalConstant.PREF_WATCHDOG_PASSWORD, Md5Util.getMd5(password));
+            } else {
+                ToastUtil.showDialog(HomeSettingActivity.this, "输入的密码不匹配");
+            }
+        } else {
+            ToastUtil.showDialog(HomeSettingActivity.this, "输入的密码不能为空");
+        }
+    }
     /**
      * 号码归属地浮框显示风格
      */

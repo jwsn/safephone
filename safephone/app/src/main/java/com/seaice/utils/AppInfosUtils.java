@@ -1,5 +1,6 @@
 package com.seaice.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -29,8 +30,14 @@ import static android.content.pm.ApplicationInfo.FLAG_SYSTEM;
 public class AppInfosUtils {
     private static final String TAG = "AppInfosUtils";
 
+
+    public static ActivityManager getAm(Context ctx){
+        return (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+    }
+
     /**
      * 获取所有应用程序包
+     *
      * @param ctx
      * @return
      */
@@ -67,6 +74,18 @@ public class AppInfosUtils {
                 appInfo.setIsRom(true);
             }
 
+            if(icon == null){
+                icon = ctx.getResources().getDrawable(R.drawable.ic_launcher);
+            }
+
+            if(apkName == null){
+                apkName = "no apk name";
+            }
+
+            if(packageName == null){
+                packageName = "no packageName";
+            }
+
             appInfo.setApkName(apkName);
             appInfo.setApkPackageName(packageName);
             appInfo.setApkSize(apkSize);
@@ -83,7 +102,7 @@ public class AppInfosUtils {
      * @return
      */
     public static List<ProInfo> getProInfos(Context ctx) {
-        ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = getAm(ctx);
         PackageManager pm = ctx.getPackageManager();
         List<ProInfo> listProInfos = new ArrayList<ProInfo>();
 
@@ -134,12 +153,12 @@ public class AppInfosUtils {
             pi.setIsSysPro(isSystemProcess);
             pi.setIsChecked(false);
 
-            Log.e(TAG, "icon = " + pi.getIcon());
-            Log.e(TAG, "appName = " + pi.getPackageName());
-            Log.e(TAG, "processName = " + pi.getProName());
-            Log.e(TAG, "memSize = " + pi.getProSize());
-            Log.e(TAG, "IsSysFlag = " + pi.getIsSysPro());
-            Log.e(TAG, "============================");
+//            Log.e(TAG, "icon = " + pi.getIcon());
+//            Log.e(TAG, "appName = " + pi.getPackageName());
+//            Log.e(TAG, "processName = " + pi.getProName());
+//            Log.e(TAG, "memSize = " + pi.getProSize());
+//            Log.e(TAG, "IsSysFlag = " + pi.getIsSysPro());
+//            Log.e(TAG, "============================");
 
             if (processName != null) {
                 listProInfos.add(pi);
@@ -148,5 +167,27 @@ public class AppInfosUtils {
             }
         }
         return listProInfos;
+    }
+
+    public static String getSystemAvailMemory(Context ctx) {
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        ActivityManager am = getAm(ctx);
+        am.getMemoryInfo(memoryInfo);
+        @SuppressLint("NewApi") long allSize = memoryInfo.totalMem;
+        String totalMemStr = Formatter.formatFileSize(ctx, allSize);
+        return totalMemStr;
+    }
+
+    public static List<ActivityManager.RunningAppProcessInfo> getSystemProcessInfos(Context ctx) {
+        ActivityManager am = getAm(ctx);
+        return am.getRunningAppProcesses();
+    }
+
+    public static void killAllProcess(Context ctx) {
+        ActivityManager am = getAm(ctx);
+        List<ActivityManager.RunningAppProcessInfo> list = getSystemProcessInfos(ctx);
+        for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : list){
+            am.killBackgroundProcesses(runningAppProcessInfo.processName);
+        }
     }
 }

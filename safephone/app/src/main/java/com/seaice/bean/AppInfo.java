@@ -2,6 +2,8 @@ package com.seaice.bean;
 
 import android.graphics.drawable.Drawable;
 
+import com.seaice.safephone.R;
+
 /**
  * Created by seaice on 2016/5/4.
  */

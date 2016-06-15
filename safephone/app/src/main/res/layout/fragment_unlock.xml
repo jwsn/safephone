@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tv_unlock_number"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:background="@android:color/darker_gray"
+        android:text="lock" />
+
+    <ListView
+        android:id="@+id/lv_unlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"></ListView>
+
+</LinearLayout>

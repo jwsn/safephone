@@ -1,19 +1,10 @@
 package com.seaice.safephone;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,30 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.seaice.constant.GlobalConstant;
-import com.seaice.reveiver.LockReceiver;
-import com.seaice.safephone.HomeCall.HomeCallDbUtil;
 import com.seaice.safephone.HomeSafeSetup.HomeSafeSetup1;
 import com.seaice.utils.Md5Util;
 import com.seaice.utils.PrefUtil;
-import com.seaice.utils.StreamUtil;
 import com.seaice.utils.ToastUtil;
 import com.seaice.view.AlwaysMarqueeTextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
     private static final String TAG = "MainActivity";
 
     private GridView gdView;
@@ -66,6 +43,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initView();
+    }
+
+    private void initView() {
         mainTitleTv = (TextView) findViewById(R.id.main_title);
         mainMsgTv = (AlwaysMarqueeTextView) findViewById(R.id.main_tv);
         gdView = (GridView) findViewById(R.id.gdView);
@@ -93,6 +74,21 @@ public class MainActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
+                    case 4: {
+                        Intent intent = new Intent(MainActivity.this, TrafficActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case 5: {
+                        Intent intent = new Intent(MainActivity.this, KillVirusActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case 6: {
+                        Intent intent = new Intent(MainActivity.this, CacheClearActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
                     case 7: {
                         Intent intent = new Intent(MainActivity.this, HomeToolsActivity.class);
                         startActivity(intent);
@@ -101,28 +97,15 @@ public class MainActivity extends Activity {
                     case 8: {
                         Intent intent = new Intent(MainActivity.this, HomeSettingActivity.class);
                         startActivity(intent);
+                        break;
                     }
-//                    case 1:
-//
-//                        ComponentName cn = new ComponentName(MainActivity.this, LockReceiver.class);
-//                        Intent intent = new Intent();
-//                        intent.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-//                        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn);
-//                        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "一键锁屏");
-//                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//                        break;
                     default:
                         break;
                 }
             }
         });
 
-
-        //测试黑名单
-        //testBlackNumDb();
     }
-
 
     /**
      * GridView 适配器
@@ -172,7 +155,6 @@ public class MainActivity extends Activity {
 
     /**
      * 弹出密码输入框
-     *
      * @return
      */
     private void showPasswordDialog() {
@@ -203,7 +185,6 @@ public class MainActivity extends Activity {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
                     String et_pwd = et_input_pwd.getText().toString();
                     if (!TextUtils.isEmpty(et_pwd)) {
@@ -297,19 +278,6 @@ public class MainActivity extends Activity {
     private static class Holder {
         public TextView gd_tv;
         public ImageView gd_iv;
-    }
-
-    /**
-     * 用来测试数据库
-     */
-    private void testBlackNumDb() {
-        Log.e(TAG, "testBlackNumDb");
-        HomeCallDbUtil hcDbUtil = new HomeCallDbUtil(this);
-        for (int i = 0; i < 200; i++) {
-            String num = "1890221204" + i;
-            String mode = "拦截短信";
-            hcDbUtil.addNum(num, mode);
-        }
     }
 
     /**

@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_traffic_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_launcher"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_traffic_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="app"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:layout_alignBottom="@id/iv_traffic_icon"
+        android:layout_toRightOf="@id/iv_traffic_icon"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_tx_rx"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@id/iv_traffic_icon"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_tx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:text="tx"
+            android:layout_margin="1dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_rx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:text="rx"
+            android:layout_margin="1dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

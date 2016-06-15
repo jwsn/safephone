@@ -63,9 +63,9 @@ public class TaskSettingActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    PrefUtil.setBooleanPref(TaskSettingActivity.this, GlobalConstant.PREF_DISPLAY_SYSTEM_PROCESS, true);
-                } else {
                     PrefUtil.setBooleanPref(TaskSettingActivity.this, GlobalConstant.PREF_DISPLAY_SYSTEM_PROCESS, false);
+                } else {
+                    PrefUtil.setBooleanPref(TaskSettingActivity.this, GlobalConstant.PREF_DISPLAY_SYSTEM_PROCESS, true);
                 }
             }
         });

@@ -16,25 +16,13 @@ import com.seaice.utils.ToastUtil;
  * Created by seaice on 2016/3/4.
  */
 public class HomeSafeSetup3 extends HomeSafeSetupBase{
-    private static final String TAG = "HomeSafeSetup1";
+    private static final String TAG = "HomeSafeSetup3";
 
     private EditText phone_et;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homesafe_setup3);
-
-        phone_et = (EditText) findViewById(R.id.phone_et);
-
-        String number = PrefUtil.getStringPref(this, GlobalConstant.PREF_SAFE_PHONE_NUMBER);
-        phone_et.setText(number);
-        phone_et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-            }
-        });
     }
 
     @Override
@@ -58,6 +46,23 @@ public class HomeSafeSetup3 extends HomeSafeSetupBase{
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.tran_in, R.anim.tran_out);
+    }
+
+    @Override
+    public void initView() {
+        setContentView(R.layout.activity_homesafe_setup3);
+        phone_et = (EditText) findViewById(R.id.phone_et);
+    }
+
+    @Override
+    public void initData() {
+        String number = PrefUtil.getStringPref(this, GlobalConstant.PREF_SAFE_PHONE_NUMBER);
+        phone_et.setText(number);
+        phone_et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            }
+        });
     }
 
     /**

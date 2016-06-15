@@ -38,8 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         seaice:item_title = "点击绑定SIM卡"
-        seaice:desc_off = "SIM卡已经绑定"
-        seaice:desc_on = "SIM卡还未绑定"
+        seaice:desc_off = "SIM卡还未绑定"
+        seaice:desc_on =  "SIM卡已经绑定"
         >
     </com.seaice.view.SetUpItemView>
 

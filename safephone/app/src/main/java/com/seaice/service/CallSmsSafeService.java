@@ -11,22 +11,16 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.RemoteException;
 import android.telephony.PhoneStateListener;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.WindowManager;
-
 import com.android.internal.telephony.ITelephony;
-import com.seaice.safephone.HomeCall.HomeCallDbUtil;
-import com.seaice.utils.ToastUtil;
+import com.seaice.utils.HomeCallDbMgr;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.Provider;
-import java.util.Objects;
 
 public class CallSmsSafeService extends Service {
 
@@ -35,7 +29,7 @@ public class CallSmsSafeService extends Service {
     private MyListener listener;
     private TelephonyManager tm;
     private InnerSmsReceiver smsReceiver;
-    private HomeCallDbUtil hcDbUtil;
+    //private HomeCallDbUtil hcDbUtil;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -68,7 +62,7 @@ public class CallSmsSafeService extends Service {
         filter.addAction("android.provider.Telephony.SMS_RECEIVED");//过滤器
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         registerReceiver(smsReceiver, filter);
-        hcDbUtil = new HomeCallDbUtil(this);
+        //hcDbUtil = new HomeCallDbUtil(this);
 
     }
 
@@ -90,7 +84,7 @@ public class CallSmsSafeService extends Service {
             for (Object obj : objs) {
                 SmsMessage sms = SmsMessage.createFromPdu((byte[]) obj);
                 String sender = sms.getOriginatingAddress();
-                String mode = hcDbUtil.findModeOfNum(sender);
+                String mode = HomeCallDbMgr.getInstance().findModeOfNum(sender);
                 if ("拦截短信".equals(mode) && "拦截短信和拦截电话".equals(mode)) {
                     abortBroadcast();
                 }
@@ -108,7 +102,7 @@ public class CallSmsSafeService extends Service {
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING: {
                     Log.e(TAG, "INCOMING CALL");
-                    String mode = hcDbUtil.findModeOfNum(incomingNumber);
+                    String mode = HomeCallDbMgr.getInstance().findModeOfNum(incomingNumber);
                     if ("拦截电话".equals(mode) || "拦截短信和拦截电话".equals(mode)) {
                         MyContentResolver mcr = new MyContentResolver(handler, incomingNumber);
                         Uri url = Uri.parse("content://call_log/calls");

@@ -39,6 +39,17 @@
         >
     </com.seaice.view.SetUpItemView>
 
+    <com.seaice.view.SetUpItemView
+        android:id="@+id/setting_watchdog_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:item_title = "看门狗"
+        seaice:desc_off = "看门狗已经关闭"
+        seaice:desc_on = "看门狗已经打开"
+        >
+    </com.seaice.view.SetUpItemView>
+
+
     <com.seaice.view.AddressStyleView
         android:id="@+id/setting_address_style"
         android:layout_width="match_parent"

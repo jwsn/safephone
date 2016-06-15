@@ -2,7 +2,6 @@ package com.seaice.safephone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,9 +10,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,23 +20,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.seaice.adapter.BaseHolder;
 import com.seaice.adapter.MyListViewBaseAdapter;
 import com.seaice.safephone.HomeCall.BlackNumInfo;
-import com.seaice.safephone.HomeCall.HomeCallDbUtil;
+import com.seaice.utils.HomeCallDbMgr;
+import com.seaice.utils.ThreadManager;
 import com.seaice.utils.ToastUtil;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class HomeCallActivity extends Activity {
     private static final String TAG = "HomeSafeActivity";
 
-    private HomeCallDbUtil hcDbUtil;
     private List<BlackNumInfo> biLists;
+
     private ListView lv_home_call;
-    private Button btn_add_blacknum;
+
     private ListViewAdapter adapter;
     private View footerView;
     private LinearLayout ll_loading;
@@ -53,6 +51,8 @@ public class HomeCallActivity extends Activity {
     private Button popup_btn_cancel;
     private CheckBox cb_call;
     private CheckBox cb_sms;
+
+    private Runnable queryBbRunnable;
 
     private Handler handler = new Handler() {
         @Override
@@ -83,7 +83,6 @@ public class HomeCallActivity extends Activity {
                 default:
                     break;
             }
-            //super.handleMessage(msg);
         }
     };
 
@@ -91,20 +90,26 @@ public class HomeCallActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_call);
-        //创建数据库
-        hcDbUtil = new HomeCallDbUtil(this);
-        startIndex = 0;
-        biLists = new ArrayList<BlackNumInfo>();
 
+        initView();
+        initData();
+    }
+
+    private void initView() {
         ll_loading = (LinearLayout) findViewById(R.id.ll_loading);
-
         footerView = getLayoutInflater().inflate(R.layout.list_view_add_more_footer_view, null);
 
         lv_home_call = (ListView) findViewById(R.id.lv_home_call);
         lv_home_call.setVisibility(View.INVISIBLE);
         lv_home_call.setOnScrollListener(new MyListViewOnScrollListener());
+    }
 
-        btn_add_blacknum = (Button) findViewById(R.id.btn_add_blacknum);
+    private void initData() {
+        startIndex = 0;
+        biLists = new ArrayList<BlackNumInfo>();
+
+        //创建数据库
+        HomeCallDbMgr.initDataBase(this);
         startThreadQueryDb();
     }
 
@@ -117,12 +122,13 @@ public class HomeCallActivity extends Activity {
             switch (scrollState) {
                 case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                     final int pos = lv_home_call.getLastVisiblePosition();
-                    Log.e("SCROLL_STATE_IDLE", "pos: " + pos);
+                    //Log.e("SCROLL_STATE_IDLE", "pos: " + pos);
                     int totalCount = biLists.size();
                     if (pos + 1 >= totalCount) {//大于或等于当前的列表的最后一个item
                         if (startIndex < mDbTotalCount) {//每次加载前的index必须必数据库的条目少
                             lv_home_call.addFooterView(footerView);
-                            startThreadQueryDb();
+                            //startThreadQueryDb();
+                            loadDataOnUiThread();
                             ToastUtil.showDialog(HomeCallActivity.this, "加载数据中");
                         } else {
                             ToastUtil.showDialog(HomeCallActivity.this, "没有更多数据加载了");
@@ -144,28 +150,40 @@ public class HomeCallActivity extends Activity {
      * 启动一个线程去获取数据,必须同步，应该lisview和添加操作的时候，会同时操作
      */
     private synchronized void startThreadQueryDb() {
-        //开一个线程从数据库里面查找黑名单。耗时操作
-        new Thread(new Runnable() {
+        queryBbRunnable = new Runnable() {
             @Override
             public void run() {
-                //测试数据
-                //biLists = hcDbUtil.findAll();
-                //分页查询
-                List<BlackNumInfo> list = hcDbUtil.findPart(startIndex);
-                if (list != null) {
-                    biLists.addAll(list);
-                    startIndex += list.size();
-                    Message msg = Message.obtain();
-                    msg.what = FIND_PART_BLACK;
-                    handler.sendMessage(msg);
-                    mDbTotalCount = hcDbUtil.getTotalNumer();
-                    if(mDbTotalCount < startIndex){
-                        startIndex = mDbTotalCount;
-                    }
-                }
-                Log.e("startThreadQueryDb", "startIndex: " + startIndex + ",mDbTotalCount: " + mDbTotalCount);
+                loadData();
             }
-        }).start();
+        };
+        ThreadManager.getThreadPool().execute(queryBbRunnable);
+    }
+
+    private void loadData() {
+        final List<BlackNumInfo> list = HomeCallDbMgr.getInstance().findPart(startIndex);
+        if (list != null) {
+            biLists.addAll(list);
+            startIndex += list.size();
+            Message msg = Message.obtain();
+            msg.what = FIND_PART_BLACK;
+            handler.sendMessage(msg);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mDbTotalCount = HomeCallDbMgr.getInstance().getTotalNumer();
+            if (mDbTotalCount < startIndex) {
+                startIndex = mDbTotalCount;
+            }
+        }
+        Log.e("startThreadQueryDb", "startIndex: " + startIndex + ",mDbTotalCount: " + mDbTotalCount);
+    }
+
+    private void loadDataOnUiThread(){
+        lv_home_call.addFooterView(footerView);
+        loadData();
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -184,7 +202,7 @@ public class HomeCallActivity extends Activity {
         cb_call = (CheckBox) popupView.findViewById(R.id.cb_call);
         cb_sms = (CheckBox) popupView.findViewById(R.id.cb_sms);
         dialog.setView(popupView);
-        popup_btn_ok.setOnClickListener(new View.OnClickListener() {
+        popup_btn_ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mode = "";
@@ -194,13 +212,13 @@ public class HomeCallActivity extends Activity {
                 if (!TextUtils.isEmpty(num)) {
                     if (isBlockCall && isBlockSms) {
                         mode = "拦截短信和拦截电话";
-                        hcDbUtil.addNum(num, mode);
+                        HomeCallDbMgr.getInstance().addNum(num, mode);
                     } else if (isBlockCall) {
                         mode = "拦截电话";
-                        hcDbUtil.addNum(num, mode);
+                        HomeCallDbMgr.getInstance().addNum(num, mode);
                     } else if (isBlockSms) {
                         mode = "拦截短信";
-                        hcDbUtil.addNum(num, mode);
+                        HomeCallDbMgr.getInstance().addNum(num, mode);
                     } else {
                         ToastUtil.showDialog(HomeCallActivity.this, "请选择模式");
                         return;
@@ -213,7 +231,7 @@ public class HomeCallActivity extends Activity {
                 dialog.dismiss();
             }
         });
-        popup_btn_cancel.setOnClickListener(new View.OnClickListener() {
+        popup_btn_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -226,51 +244,67 @@ public class HomeCallActivity extends Activity {
      * LIST VIEW ADAPTER
      */
     private class ListViewAdapter extends MyListViewBaseAdapter<BlackNumInfo> {
-
         public ListViewAdapter(Context context, List list) {
             super(context, list);
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            Holder holder = new Holder();
+            Holder holder;
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.home_call_listview_item, null, false);
-                holder.tv_num = (TextView) convertView.findViewById(R.id.tv_number);
-                holder.tv_mod = (TextView) convertView.findViewById(R.id.tv_mode);
-                holder.iv_del = (ImageView) convertView.findViewById(R.id.iv_del);
-                convertView.setTag(holder);
+                holder = new Holder(lists);
             } else {
                 holder = (Holder) convertView.getTag();
             }
+            holder.refreshView(position);
+            return holder.getContentView();
+        }
+    }
 
-            holder.tv_num.setText(lists.get(position).getNum());
-            holder.tv_mod.setText(lists.get(position).getMode());
-            holder.iv_del.setOnClickListener(new View.OnClickListener() {
+    private class Holder extends BaseHolder<BlackNumInfo> {
+
+        public TextView tv_num;
+        public TextView tv_mod;
+        public ImageView iv_del;
+
+        protected Holder(List<BlackNumInfo> l) {
+            super(l);
+            initView();
+        }
+
+        @Override
+        protected void initView() {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.home_call_listview_item, null, false);
+            this.tv_num = (TextView) view.findViewById(R.id.tv_number);
+            this.tv_mod = (TextView) view.findViewById(R.id.tv_mode);
+            this.iv_del = (ImageView) view.findViewById(R.id.iv_del);
+            view.setTag(this);
+        }
+
+        @Override
+        protected void refreshView(int pos) {
+            final BlackNumInfo data = lists.get(pos);
+            this.tv_num.setText(data.getNum());
+            this.tv_mod.setText(data.getMode());
+            this.iv_del.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    hcDbUtil.delete(lists.get(position).getNum());
-                    lists.remove(position);
-                    notifyDataSetChanged();
+                    HomeCallDbMgr.getInstance().delete(data.getNum());
+                    lists.remove(data);
+                    adapter.notifyDataSetChanged();
                     mDbTotalCount--;
-                    if(mDbTotalCount < startIndex){
+                    if (mDbTotalCount < startIndex) {
                         startIndex = mDbTotalCount;
                     }
                 }
             });
-            return convertView;
         }
     }
 
-    private static class Holder {
-        public TextView tv_num;
-        public TextView tv_mod;
-        public ImageView iv_del;
-    }
-
     @Override
-    protected void onDestroy() {
+    public void onDestroy(){
         super.onDestroy();
+        HomeCallDbMgr.getInstance().closeDataBase();
     }
 }

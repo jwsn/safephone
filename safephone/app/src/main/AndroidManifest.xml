@@ -7,7 +7,6 @@
     <!-- PERMISSION -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -19,13 +18,15 @@
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
     <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"></uses-permission>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"></uses-permission>
+    <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -42,7 +43,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".HomeSafeActivity">
             <intent-filter>
-                <action android:name="aaa.bbb.ccc"/>
+                <action android:name="aaa.bbb.ccc" />
             </intent-filter>
         </activity>
         <activity android:name=".HomeSafeSetup.HomeSafeSetup1" />
@@ -56,7 +57,7 @@
         <activity android:name=".HomeManagerActivity" />
         <activity android:name=".TaskManagerActivity"></activity>
         <activity android:name=".TaskSetting.TaskSettingActivity"></activity>
-
+        <activity android:name=".KillVirusActivity"></activity>
         <activity
             android:name=".HomeSetting.HomeSettingDragView"
             android:theme="@style/Transparent" />
@@ -64,18 +65,22 @@
             android:name=".RocketBackgroundActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".HomeCallActivity" />
-
+        <activity android:name=".ProgressLock.LockActivity"></activity>
+        <activity android:name=".ProgressLock.EnterPwActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity android:name=".CacheClearActivity"></activity>
+        <activity android:name=".TrafficActivity"></activity>
         <!-- RECEIVER -->
         <receiver android:name="com.seaice.reveiver.BootCompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.boot_completed" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.seaice.reveiver.SmsReceiver">
 
+        <receiver android:name="com.seaice.reveiver.SmsReceiver">
             <!-- 设置接收短信的优先级 -->
             <intent-filter android:priority="2147483647">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
         <receiver
@@ -90,6 +95,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".MyAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+                <action android:name="com.seaiace_safephone_udpate_widget"></action>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/my_app_widget_info"></meta-data>
+        </receiver>
         <!--
         广播静态注册,改为动态注册
         <receiver android:name="com.seaice.reveiver.OutCallReceiver">
@@ -106,6 +120,8 @@
         <service android:name="com.seaice.service.RockeyService"></service>
         <service android:name="com.seaice.service.CallSmsSafeService"></service>
         <service android:name="com.seaice.service.ClearProcessService"></service>
+        <service android:name="com.seaice.service.KillProcessWidgetService"></service>
+        <service android:name="com.seaice.service.LockService"></service>
     </application>
 
 </manifest>

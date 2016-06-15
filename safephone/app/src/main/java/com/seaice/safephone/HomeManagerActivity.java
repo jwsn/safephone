@@ -337,10 +337,11 @@ public class HomeManagerActivity extends Activity {
                 appInfo = listSysApp.get(position - listUserApp.size() - 2);
             }
 
-            Holder holder = new Holder();
+            Holder holder;
             if (convertView != null && convertView instanceof RelativeLayout) {
                 holder = (Holder) convertView.getTag();
             } else {
+                holder = new Holder();
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.app_manager_listview_item, null, false);
                 holder.iv = (ImageView) convertView.findViewById(R.id.iv_icon);

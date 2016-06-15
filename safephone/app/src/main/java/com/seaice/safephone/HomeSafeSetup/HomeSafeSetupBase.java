@@ -16,19 +16,28 @@ import com.seaice.utils.ToastUtil;
 /**
  * Created by seaice on 2016/3/4.
  */
-public abstract class HomeSafeSetupBase extends Activity{
+public abstract class HomeSafeSetupBase extends Activity {
     private static final String TAG = "HomeSafeSetupBase";
 
-    //private static final String
-
     private GestureDetector gestureDetector;
+
+    //abstract method
+    abstract public void showPrevPage();
+    abstract public void showNextPage();
+    abstract public void initView();
+    abstract public void initData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setGestureDetector();
+        initView();
+        initData();
+    }
 
-        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
-
+    //滑动效果
+    private void setGestureDetector() {
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             /**
              * 监听手势滑动事件
              * @param e1表示滑动起点
@@ -42,17 +51,17 @@ public abstract class HomeSafeSetupBase extends Activity{
                                    float velocityY) {
 
                 //判断纵向滑动幅度是否过大，过大则不进行处理
-                if(Math.abs(e2.getRawY() - e1.getRawY()) > 100){
+                if (Math.abs(e2.getRawY() - e1.getRawY()) > 100) {
                     return true;
                 }
 
                 //向右滑动
-                if(e2.getRawX() - e1.getRawX() > 200){
+                if (e2.getRawX() - e1.getRawX() > 200) {
                     showPrevPage();
                     return true;
                 }
                 //向左滑动
-                if(e1.getRawX() - e2.getRawX() > 200){
+                if (e1.getRawX() - e2.getRawX() > 200) {
                     showNextPage();
                     return true;
                 }
@@ -62,21 +71,9 @@ public abstract class HomeSafeSetupBase extends Activity{
         });
     }
 
-    /**
-     * 展示上一页
-     */
-    abstract public void showPrevPage();
-
-    abstract public void showNextPage();
-
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event) {
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

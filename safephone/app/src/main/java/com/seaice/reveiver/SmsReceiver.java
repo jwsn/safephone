@@ -16,6 +16,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.seaice.constant.GlobalConstant;
 import com.seaice.safephone.R;
@@ -30,17 +31,27 @@ import java.util.Objects;
  * Created by seaice on 2016/3/24.
  */
 public class SmsReceiver extends BroadcastReceiver {
+    private static final String TAG = "SmsReceiver";
+
+    private static final String LOCATION_SMS = "#*location*#";
+    private static final String ALARM_SMS = "#*alarm*#";
+    private static final String WIPEDATA_SMS = "#*wipedata*#";
+    private static final String LOCK_SMS = "#*lock*#";
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        //没有打开，则直接返回
+        if(!PrefUtil.getBooleanPref(context, GlobalConstant.PREF_OPEN_LOST_PROTECT)){
+            Log.e(TAG, "NO OPEN THE LOST PROTECT FUNCTION");
+            return;
+        }
 
         Object[] objects = (Object[]) intent.getExtras().get("pdus");
-
         for(Object object : objects){
             SmsMessage message = SmsMessage.createFromPdu((byte[])object);
             String oraddress = message.getOriginatingAddress();
             String content = message.getMessageBody();
-
-            if("#*location*#".equals(content)){
+            if(LOCATION_SMS.equals(content)){
                 context.startService(new Intent(context, LocationService.class));
                 String location = PrefUtil.getStringPref(context, GlobalConstant.PREF_LOCATION);
                 if(TextUtils.isEmpty(location)){
@@ -50,8 +61,8 @@ public class SmsReceiver extends BroadcastReceiver {
                 SmsManager sm = SmsManager.getDefault();
                 sm.sendTextMessage(safephone, null, location, null, null);
                 abortBroadcast();//中断短信的传递
-
-            }else if("#*alarm*#".equals(content)){
+                Log.e(TAG, "SEND MSG LOCATION");
+            }else if(ALARM_SMS.equals(content)){
                 //播放报警铃音
                 MediaPlayer player = MediaPlayer.create(context, R.raw.ylzs);
                 player.setVolume(1f, 1f);
@@ -59,11 +70,11 @@ public class SmsReceiver extends BroadcastReceiver {
                 player.start();
                 abortBroadcast();
 
-            }else if("#*wipedata*#".equals(content)){
+            }else if(WIPEDATA_SMS.equals(content)){
 
             }else {
                 //一键锁屏
-                if ("#*lockscreen*#".equals(content)) {
+                if (LOCK_SMS.equals(content)) {
                     DevicePolicyManager pm = (DevicePolicyManager) context.getSystemService(context.DEVICE_POLICY_SERVICE);
                     ComponentName cn = new ComponentName(context, LockReceiver.class);
                     if (pm.isAdminActive(cn)) {
@@ -77,7 +88,6 @@ public class SmsReceiver extends BroadcastReceiver {
             }
         }
     }
-
 
     public void activeManager(Context ctx, ComponentName cn){
         Intent intent = new Intent();

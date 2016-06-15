@@ -1,0 +1,50 @@
+---- SetUpItemView Æ¥Åä (49 in 14 ÎÄ¼þ) ----
+activity_homesafe_setup2.xml (app\build\intermediates\res\merged\debug\layout):    <com.seaice.view.SetUpItemView
+activity_homesafe_setup2.xml (app\build\intermediates\res\merged\debug\layout):    </com.seaice.view.SetUpItemView>
+activity_homesafe_setup2.xml (app\src\main\res\layout):    <com.seaice.view.SetUpItemView
+activity_homesafe_setup2.xml (app\src\main\res\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\build\intermediates\res\merged\debug\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\src\main\res\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\src\main\res\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\src\main\res\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\src\main\res\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\src\main\res\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\src\main\res\layout):    </com.seaice.view.SetUpItemView>
+activity_home_setting.xml (app\src\main\res\layout):    <com.seaice.view.SetUpItemView
+activity_home_setting.xml (app\src\main\res\layout):    </com.seaice.view.SetUpItemView>
+attrs.xml (app\src\main\res\values):    <declare-styleable name="SetUpItemView">
+HomeSafeSetup2.java (app\src\main\java\com\seaice\safephone\HomeSafeSetup):import com.seaice.view.SetUpItemView;
+HomeSafeSetup2.java (app\src\main\java\com\seaice\safephone\HomeSafeSetup):    private com.seaice.view.SetUpItemView itemView;
+HomeSafeSetup2.java (app\src\main\java\com\seaice\safephone\HomeSafeSetup):        itemView = (SetUpItemView) findViewById(R.id.set_up_item_view);
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):import com.seaice.view.SetUpItemView;
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):    private com.seaice.view.SetUpItemView updateitemView;
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):    private com.seaice.view.SetUpItemView blacknumitemView;
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):    private com.seaice.view.SetUpItemView displayaddressitem;
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):    private com.seaice.view.SetUpItemView watchDogItem;
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):        updateitemView = (SetUpItemView) findViewById(R.id.setting_update_item);
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):        blacknumitemView = (SetUpItemView) findViewById(R.id.setting_blacknum_item);
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):        watchDogItem = (SetUpItemView) findViewById(R.id.setting_watchdog_item);
+HomeSettingActivity.java (app\src\main\java\com\seaice\safephone):        displayaddressitem = (SetUpItemView) findViewById(R.id.setting_address_display);
+HomeToolsActivity.java (app\src\main\java\com\seaice\safephone):import com.seaice.view.SetUpItemView;
+HomeToolsActivity.java (app\src\main\java\com\seaice\safephone):    private SetUpItemView updateitemView;
+HomeToolsAddress.java (app\src\main\java\com\seaice\safephone\homeTools):import com.seaice.view.SetUpItemView;
+merger.xml (app\build\intermediates\incremental\mergeDebugResources):    </declare-styleable><declare-styleable name="SetUpItemView">
+merger.xml (app\build\intermediates\incremental\mergeDebugResources):e="title"/><attr format="string" name="subtitle"/><attr format="reference" name="titleTextStyle"/><attr format="reference" name="subtitleTextStyle"/><attr format="reference" name="icon"/><attr format="reference" name="logo"/><attr format="reference" name="divider"/><attr format="reference" name="background"/><attr format="reference|color" name="backgroundStacked"/><attr format="reference|color" name="backgroundSplit"/><attr format="reference" name="customNavigationLayout"/><attr name="height"/><attr format="reference" name="homeLayout"/><attr format="reference" name="progressBarStyle"/><attr format="reference" name="indeterminateProgressStyle"/><attr format="dimension" name="progressBarPadding"/><attr name="homeAsUpIndicator"/><attr format="dimension" name="itemPadding"/><attr format="boolean" name="hideOnContentScroll"/><attr format="dimension" name="contentInsetStart"/><attr format="dimension" name="contentInsetEnd"/><attr format="dimension" name="contentInsetLeft"/><attr format="dimension" name="contentInsetRight"/><attr format="dimension" name="elevation"/><attr format="reference" name="popupTheme"/></declare-styleable><declare-styleable name="ActionMenuItemView"><attr name="android:minWidth"/></declare-styleable><declare-styleable name="MenuGroup"><attr name="android:id"/><attr name="android:menuCategory"/><attr name="android:orderInCategory"/><attr name="android:checkableBehavior"/><attr name="android:visible"/><attr name="android:enabled"/></declare-styleable><declare-styleable name="Toolbar"><attr format="reference" name="titleTextAppearance"/><attr format="reference" name="subtitleTextAppearance"/><attr name="title"/><attr name="subtitle"/><attr name="android:gravity"/><attr format="dimension" name="titleMargins"/><attr format="dimension" name="titleMarginStart"/><attr format="dimension" name="titleMarginEnd"/><attr format="dimension" name="titleMarginTop"/><attr format="dimension" name="titleMarginBottom"/><attr name="contentInsetStart"/><attr name="contentInsetEnd"/><attr name="contentInsetLeft"/><attr name="contentInsetRight"/><attr format="dimension" name="maxButtonHeight"/><attr format="reference" name="collapseIcon"/><attr format="string" name="collapseContentDescription"/><attr name="popupTheme"/><attr format="reference" name="navigationIcon"/><attr format="string" name="navigationContentDescription"/><attr name="android:minHeight"/><attr name="logo"/><attr format="string" name="logoDescription"/><attr format="color" name="titleTextColor"/><attr format="color" name="subtitleTextColor"/></declare-styleable><declare-styleable name="LinearLayoutCompat_Layout"><attr name="android:layout_width"/><attr name="android:layout_height"/><attr name="android:layout_weight"/><attr name="android:layout_gravity"/></declare-styleable><declare-styleable name="SetUpItemView"><attr format="string" name="item_title"/><attr format="string" name="desc_on"/><attr format="string" name="desc_off"/></declare-styleable><declare-styleable name="AppCompatTextView"><attr format="reference|boolean" name="textAllCaps"/><attr name="android:textAppearance"/></declare-styleable><declare-styleable name="MenuItem"><attr name="android:id"/><attr name="android:menuCategory"/><attr name="android:orderInCategory"/><attr name="android:title"/><attr name="android:titleCondensed"/><attr name="android:icon"/><attr name="android:alphabeticShortcut"/><attr name="android:numericShortcut"/><attr name="android:checkable"/><attr name="android:checked"/><attr name="android:visible"/><attr name="android:enabled"/><attr name="android:onClick"/><attr name="showAsAction"><flag name="never" value="0"/><flag name="ifRoom" value="1"/><flag name="always" value="2"/><flag name="withText" value="4"/><flag name="collapseActionView" value="8"/></attr><attr format="reference" name="actionLayout"/><attr format="string" name="actionViewClass"/><attr format="string" name="actionProviderClass"/></declare-styleable><declare-styleable name="ButtonBarLayout"><attr format="boolean" name="allowStacking"/></
+R.java (app\build\generated\source\r\debug\com\seaice\safephone):        /** Attributes that can be used with a SetUpItemView.
+R.java (app\build\generated\source\r\debug\com\seaice\safephone):        public static final int[] SetUpItemView = {
+R.java (app\build\generated\source\r\debug\com\seaice\safephone):          attribute's value can be found in the {@link #SetUpItemView} array.
+R.java (app\build\generated\source\r\debug\com\seaice\safephone):          attribute's value can be found in the {@link #SetUpItemView} array.
+R.java (app\build\generated\source\r\debug\com\seaice\safephone):          attribute's value can be found in the {@link #SetUpItemView} array.
+R.txt (app\build\intermediates\symbols\debug):int[] styleable SetUpItemView { 0x7f010049, 0x7f01004a, 0x7f01004b }
+SetUpItemView.java (app\src\main\java\com\seaice\view):public class SetUpItemView extends RelativeLayout {
+SetUpItemView.java (app\src\main\java\com\seaice\view):    public SetUpItemView(Context context) {
+SetUpItemView.java (app\src\main\java\com\seaice\view):    public SetUpItemView(Context context, AttributeSet attrs) {
+SetUpItemView.java (app\src\main\java\com\seaice\view):    public SetUpItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+values.xml (app\build\intermediates\res\merged\debug\values):    <declare-styleable name="SetUpItemView"><attr format="string" name="item_title"/><attr format="string" name="desc_on"/><attr format="string" name="desc_off"/></declare-styleable>

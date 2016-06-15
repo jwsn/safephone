@@ -15,24 +15,28 @@ import com.seaice.utils.PrefUtil;
 /**
  * Created by seaice on 2016/3/4.
  */
-public class HomeSafeSetup4 extends HomeSafeSetupBase{
-    private static final String TAG = "HomeSafeSetup1";
-
-
+public class HomeSafeSetup4 extends HomeSafeSetupBase {
+    private static final String TAG = "HomeSafeSetup4";
     private CheckBox cb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homesafe_setup4);
+    }
 
+    @Override
+    public void initView() {
+        setContentView(R.layout.activity_homesafe_setup4);
         cb = (CheckBox) findViewById(R.id.checkbox);
-        boolean isChecked = PrefUtil.getBooleanPref(this, GlobalConstant.PREF_OPEN_LOST_PROTECT);
-        setCheck(isChecked);
+    }
+
+    @Override
+    public void initData() {
+        boolean mChecked = PrefUtil.getBooleanPref(this, GlobalConstant.PREF_OPEN_LOST_PROTECT);
+        setCheck(mChecked);
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                PrefUtil.setBooleanPref(HomeSafeSetup4.this, GlobalConstant.PREF_OPEN_LOST_PROTECT, isChecked);
                 setCheck(isChecked);
             }
         });
@@ -57,29 +61,34 @@ public class HomeSafeSetup4 extends HomeSafeSetupBase{
 
     /**
      * 设置checkbox的状态
+     *
      * @param isChecked
      */
-    private void setCheck(boolean isChecked){
-        if(isChecked == false) {
+    private void setCheck(boolean isChecked) {
+        PrefUtil.setBooleanPref(HomeSafeSetup4.this, GlobalConstant.PREF_OPEN_LOST_PROTECT, isChecked);
+        if (isChecked == false) {
             cb.setText("防盗保护没有开启");
-        }else{
+        } else {
             cb.setText("防盗保护已经开启");
         }
+        cb.setChecked(isChecked);
     }
 
     /**
      * 下一页按钮
+     *
      * @param view
      */
-    public void nextPage(View view){
+    public void nextPage(View view) {
         showNextPage();
     }
 
     /**
      * 上一页按钮
+     *
      * @param view
      */
-    public void prevPage(View view){
+    public void prevPage(View view) {
         showPrevPage();
     }
 

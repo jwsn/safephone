@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+
+    <ImageView
+        android:id="@+id/iv_cache_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/ic_launcher"/>
+    <TextView
+        android:id="@+id/tv_cache_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_cache_icon"
+        android:layout_alignBottom="@id/iv_cache_icon"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:text="test"/>
+
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp"
+        >
+        <TextView
+            android:id="@+id/tv_code_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/tv_data_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/tv_cache_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textAlignment="center"/>
+    </LinearLayout>
+</RelativeLayout>
