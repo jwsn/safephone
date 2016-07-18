@@ -104,14 +104,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/my_app_widget_info"></meta-data>
         </receiver>
-        <!--
+
         广播静态注册,改为动态注册
-        <receiver android:name="com.seaice.reveiver.OutCallReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL"></action>
-            </intent-filter>
-        </receiver>
-        -->
 
 
         <!-- SERVICE -->

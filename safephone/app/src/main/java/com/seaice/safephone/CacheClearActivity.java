@@ -104,6 +104,7 @@ public class CacheClearActivity extends Activity {
         ll_load.setVisibility(View.GONE);
     }
 
+    //适配器
     private class CacheAdapter extends MyListViewBaseAdapter<CacheInfo> {
 
         public CacheAdapter(Context context, List<CacheInfo> list) {
@@ -113,38 +114,12 @@ public class CacheClearActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 //            CacheInfo info = cacheInfoVector.get(position);
-
             Holder holder;
             if (convertView == null) {
                 holder = new Holder(cacheInfoVector);
-//                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//                convertView = inflater.inflate(R.layout.cache_listview_item, null, false);
-//                holder.iv_icon = (ImageView) convertView.findViewById(R.id.iv_cache_icon);
-//                holder.tv_name = (TextView) convertView.findViewById(R.id.tv_cache_name);
-//                holder.tv_cache = (TextView) convertView.findViewById(R.id.tv_cache_size);
-//                holder.tv_code = (TextView) convertView.findViewById(R.id.tv_code_size);
-//                holder.tv_data = (TextView) convertView.findViewById(R.id.tv_data_size);
-//                convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();
             }
-//            Log.e(TAG, info.toString());
-//            if(info.getIcon() == null){
-//                Log.e(TAG, "HAIBING");
-//            }
-//
-//            if(holder == null){
-//                Log.e(TAG, "holer");
-//            }
-//
-//            if(holder.iv_icon == null){
-//                Log.e(TAG, "KONG");
-//            }
-//            holder.iv_icon.setImageDrawable(info.getIcon());
-//            holder.tv_name.setText(info.getAppName());
-//            holder.tv_cache.setText("缓存大小："+info.getCacheSize());
-//            holder.tv_data.setText("数据大小："+info.getDataSize());
-//            holder.tv_code.setText("应用大小："+info.getCodeSize());
             holder.refreshView(position);
             return holder.getContentView();
         }
@@ -159,6 +134,7 @@ public class CacheClearActivity extends Activity {
 
         protected Holder(List l) {
             super(l);
+            initView();
         }
 
         @Override

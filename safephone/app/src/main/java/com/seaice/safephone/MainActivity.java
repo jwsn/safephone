@@ -17,7 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.seaice.constant.GlobalConstant;
 import com.seaice.safephone.HomeSafeSetup.HomeSafeSetup1;
+import com.seaice.service.RockeyService;
+import com.seaice.utils.HomeCallDbMgr;
 import com.seaice.utils.Md5Util;
+import com.seaice.utils.MyWindowManager;
 import com.seaice.utils.PrefUtil;
 import com.seaice.utils.ToastUtil;
 import com.seaice.view.AlwaysMarqueeTextView;
@@ -25,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends Activity{
     private static final String TAG = "MainActivity";
+
+    private static Context sActivity;
 
     private GridView gdView;
     private TextView mainTitleTv;
@@ -44,6 +49,25 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
         initView();
+        initData();
+
+        //开启设置中的服务
+        startSettingService();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        sActivity = this;
+    }
+
+
+    public static Context getsActivity(){
+        return sActivity;
+    }
+
+    private void initData() {
+        HomeCallDbMgr.initDataBase(this);
     }
 
     private void initView() {
@@ -284,6 +308,14 @@ public class MainActivity extends Activity{
      * 启动设置里面的各种服务
      */
     private void startSettingService() {
+
+        //打开悬浮框
+        if(PrefUtil.getBooleanPref(this, GlobalConstant.PREF_SETTING_ROCKEET)){
+            Intent intent = new Intent(this, RockeyService.class);
+            startService(intent);
+        }
+
+
 
     }
 }

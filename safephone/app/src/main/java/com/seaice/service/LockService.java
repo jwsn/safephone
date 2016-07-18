@@ -7,20 +7,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.WindowManager;
 
 import com.seaice.safephone.ProgressLock.EnterPwActivity;
-import com.seaice.safephone.ProgressLock.LockActivity;
 import com.seaice.utils.LockDbUtil;
-import com.seaice.view.RocketView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class LockService extends Service {
     private static final String TAG = "LockService";

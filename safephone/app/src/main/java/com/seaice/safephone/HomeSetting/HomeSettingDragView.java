@@ -2,29 +2,20 @@ package com.seaice.safephone.HomeSetting;
 
 import android.app.Activity;
 import android.os.SystemClock;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.seaice.constant.GlobalConstant;
 import com.seaice.safephone.R;
 import com.seaice.utils.PrefUtil;
-
-import org.w3c.dom.Text;
 
 public class HomeSettingDragView extends Activity {
 
     private TextView tv_top;
     private TextView tv_bottom;
-    private TextView tv;
     private ImageView iv_drag;
 
     private int startX;
@@ -33,6 +24,7 @@ public class HomeSettingDragView extends Activity {
     private int screenWidth;
     private int screenHeight;
     private long[] mHits = new long[2];//双击事件
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +40,6 @@ public class HomeSettingDragView extends Activity {
         tv_bottom = (TextView) findViewById(R.id.tv_bottom);
         tv_bottom.setVisibility(View.INVISIBLE);
 
-        //tv = (TextView) findViewById(R.id.tv);
         if (lastY >= screenHeight / 2) {
             tv_top.setVisibility(View.VISIBLE);
             tv_bottom.setVisibility(View.INVISIBLE);

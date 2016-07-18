@@ -194,6 +194,7 @@ public class TrafficActivity extends Activity {
 
         protected Holder(List<TrafficInfo> l) {
             super(l);
+            initView();
         }
 
         @Override

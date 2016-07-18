@@ -20,12 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.seaice.adapter.BaseHolder;
 import com.seaice.adapter.MyListViewBaseAdapter;
 import com.seaice.safephone.HomeCall.BlackNumInfo;
 import com.seaice.utils.HomeCallDbMgr;
 import com.seaice.utils.ThreadManager;
 import com.seaice.utils.ToastUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,10 @@ public class HomeCallActivity extends Activity {
     private static final int FIND_PART_BLACK = 2;
     private static final int FIND_ALL_BLACK = 1;
 
+    private static final int LOADING_DATA = 1;
+    private static final int LOADING_IDLE = 2;
+
+    private int mLoadinState;
     private int startIndex;
     private int mDbTotalCount;
 
@@ -79,6 +85,7 @@ public class HomeCallActivity extends Activity {
                         lv_home_call.removeFooterView(footerView);
                         adapter.notifyDataSetChanged();
                     }
+                    mLoadinState = LOADING_IDLE;
                     break;
                 default:
                     break;
@@ -126,10 +133,13 @@ public class HomeCallActivity extends Activity {
                     int totalCount = biLists.size();
                     if (pos + 1 >= totalCount) {//大于或等于当前的列表的最后一个item
                         if (startIndex < mDbTotalCount) {//每次加载前的index必须必数据库的条目少
-                            lv_home_call.addFooterView(footerView);
-                            //startThreadQueryDb();
-                            loadDataOnUiThread();
-                            ToastUtil.showDialog(HomeCallActivity.this, "加载数据中");
+                            if (mLoadinState == LOADING_IDLE) {
+                                mLoadinState = LOADING_DATA;
+                                lv_home_call.addFooterView(footerView);
+                                startThreadQueryDb();
+                                //loadDataOnUiThread();
+                                ToastUtil.showDialog(HomeCallActivity.this, "加载数据中");
+                            }
                         } else {
                             ToastUtil.showDialog(HomeCallActivity.this, "没有更多数据加载了");
                         }
@@ -176,11 +186,13 @@ public class HomeCallActivity extends Activity {
             if (mDbTotalCount < startIndex) {
                 startIndex = mDbTotalCount;
             }
+        }else {
+            mLoadinState = LOADING_IDLE;
         }
         Log.e("startThreadQueryDb", "startIndex: " + startIndex + ",mDbTotalCount: " + mDbTotalCount);
     }
 
-    private void loadDataOnUiThread(){
+    private void loadDataOnUiThread() {
         lv_home_call.addFooterView(footerView);
         loadData();
         adapter.notifyDataSetChanged();
@@ -303,7 +315,7 @@ public class HomeCallActivity extends Activity {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         HomeCallDbMgr.getInstance().closeDataBase();
     }

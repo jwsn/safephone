@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.seaice.constant.GlobalConstant;
 import com.seaice.db.SqliteDbHelper;
@@ -33,8 +34,8 @@ public class HomeCallDbMgr {
     //必须初始化数据库
     public static synchronized void initDataBase(Context ctx) {
         if (instance == null) {
-            synchronized (HomeCallDbMgr.class){
-                if(instance == null){
+            synchronized (HomeCallDbMgr.class) {
+                if (instance == null) {
                     instance = new HomeCallDbMgr();
                     dbHelper = new SqliteDbHelper(ctx, GlobalConstant.DB_NAME);
                 }
@@ -45,28 +46,29 @@ public class HomeCallDbMgr {
     //获取管理实例
     public static synchronized HomeCallDbMgr getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(HomeCallDbMgr.class.getSimpleName()+"is not create," +
+            throw new IllegalStateException(HomeCallDbMgr.class.getSimpleName() + "is not create," +
                     "call initDataBase() method first");
         }
         return instance;
     }
 
     //打开数据库连接
-    private synchronized SQLiteDatabase openWritableDataBase(){
-        if(mOpenCount.incrementAndGet() == 1){
+    private synchronized SQLiteDatabase openWritableDataBase() {
+        if (mOpenCount.incrementAndGet() == 1) {
             database = dbHelper.getWritableDatabase();
         }
         return database;
     }
 
     //关闭数据库
-    public synchronized void closeDataBase(){
-        if(mOpenCount.decrementAndGet() == 0){
+    public synchronized void closeDataBase() {
+        if (mOpenCount.decrementAndGet() == 0) {
             database.close();
         }
     }
 
-    private HomeCallDbMgr(){}
+    private HomeCallDbMgr() {
+    }
 
     public void addNum(String num, String mode) {
         ContentValues cv = new ContentValues();
@@ -101,12 +103,19 @@ public class HomeCallDbMgr {
     }
 
     public String findModeOfNum(String number) {
+        Log.e(TAG, "FING MODE OF NUM");
+        Log.e(TAG, number+"");
         String mode = "";
-        Cursor cursor = getInstance().openWritableDataBase().query(GlobalConstant.DB_BLACKNUM_TABLE, new String[]{MODE}, NUMBER + "=?", new String[]{number}, null, null, null);
+        Cursor cursor = getInstance().openWritableDataBase().query(GlobalConstant.DB_BLACKNUM_TABLE,
+                new String[]{MODE}, NUMBER + "=?", new String[]{number}, null, null, null);
+
         if (cursor.moveToNext()) {
+            Log.e(TAG, "ADD LOG");
             mode = cursor.getString(cursor.getColumnIndex(MODE));
         }
+        Log.e(TAG, "ADD LOG1");
         cursor.close();
+        Log.e(TAG, mode);
         return mode;
     }
 

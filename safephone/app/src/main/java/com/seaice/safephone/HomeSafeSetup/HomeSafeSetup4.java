@@ -1,8 +1,13 @@
 package com.seaice.safephone.HomeSafeSetup;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -11,6 +16,7 @@ import com.seaice.constant.GlobalConstant;
 import com.seaice.safephone.HomeSafeActivity;
 import com.seaice.safephone.R;
 import com.seaice.utils.PrefUtil;
+import com.seaice.utils.ToastUtil;
 
 /**
  * Created by seaice on 2016/3/4.
@@ -18,6 +24,8 @@ import com.seaice.utils.PrefUtil;
 public class HomeSafeSetup4 extends HomeSafeSetupBase {
     private static final String TAG = "HomeSafeSetup4";
     private CheckBox cb;
+
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,13 @@ public class HomeSafeSetup4 extends HomeSafeSetupBase {
 
     @Override
     public void initData() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkPermission = ContextCompat.checkSelfPermission(HomeSafeSetup4.this, Manifest.permission.SEND_SMS);
+            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(HomeSafeSetup4.this, new String[]{android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+                return;
+            }
+        }
         boolean mChecked = PrefUtil.getBooleanPref(this, GlobalConstant.PREF_OPEN_LOST_PROTECT);
         setCheck(mChecked);
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -65,6 +80,7 @@ public class HomeSafeSetup4 extends HomeSafeSetupBase {
      * @param isChecked
      */
     private void setCheck(boolean isChecked) {
+
         PrefUtil.setBooleanPref(HomeSafeSetup4.this, GlobalConstant.PREF_OPEN_LOST_PROTECT, isChecked);
         if (isChecked == false) {
             cb.setText("防盗保护没有开启");
@@ -90,6 +106,20 @@ public class HomeSafeSetup4 extends HomeSafeSetupBase {
      */
     public void prevPage(View view) {
         showPrevPage();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (PERMISSION_REQUEST_CODE == requestCode) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    initData();
+                }
+            } else {
+                ToastUtil.showDialog(this, "必须统一打开权限才可以");
+            }
+        }
     }
 
     @Override

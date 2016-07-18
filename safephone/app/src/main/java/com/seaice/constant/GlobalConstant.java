@@ -16,9 +16,16 @@ public class GlobalConstant {
     public static final String PREF_SETTING_BLACKNUM = "setting_blacknum_item";
     public static final String PREF_SETTING_WATCHDOG = "setting_watchdog_item";
     public static final String PREF_WATCHDOG_PASSWORD = "setting_watchdog_password";
+    public static final String PREF_SETTING_ROCKEET = "setting_rocket_item";
+
+
     //tv_location
     public static final String PREF_LAST_X = "last_x";
     public static final String PREF_LAST_Y = "last_y";
+
+    //rocket start pos
+    public static final String PREF_START_X = "rocket_start_x";
+    public static final String PREF_START_Y = "rocket_start_y";
 
     //db
     public static final String DB_NAME = "safe_phone.db";

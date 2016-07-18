@@ -68,4 +68,14 @@
         >
     </com.seaice.view.AddressStyleView>
 
+    <com.seaice.view.SetUpItemView
+        android:id="@+id/setting_rocket_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        seaice:item_title = "悬浮框"
+        seaice:desc_off = "悬浮框已经关闭"
+        seaice:desc_on = "悬浮框已经打开"
+        >
+    </com.seaice.view.SetUpItemView>
+
 </LinearLayout>
